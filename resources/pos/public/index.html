@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- PWA meta tags -->
+    <meta name="theme-color" content="#6366f1" />
+    <meta name="description" content="JhonSport POS — Sistema de punto de venta" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="JhonSport POS" />
+
+    <!-- Íconos -->
+    <link rel="icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" href="/logo192.png" />
+
+    <!-- Manifest PWA -->
+    <link rel="manifest" href="/manifest.json" />
+
+    <title>JhonSport POS</title>
+  </head>
+  <body id="kt_body" class="page-loading dark-mode header-fixed header-tablet-and-mobile-fixed toolbar-enabled toolbar-fixed aside-enabled aside-fixed">
+    <noscript>Necesitas habilitar JavaScript para usar esta aplicación.</noscript>
+    <div id="root" class="d-flex flex-column flex-root"></div>
+    <div id="splash-screen" class="splash-screen">
+      <img src="/media/logos/logo-2.svg" alt="JhonSport POS" class="h-30px" />
+      <span>Cargando ...</span>
+    </div>
+    <div id="root-modals"></div>
+
+    <!-- Registro del Service Worker -->
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function () {
+          navigator.serviceWorker
+            .register('/sw.js')
+            .then(function (registration) {
+              console.log('[PWA] Service Worker registrado:', registration.scope);
+            })
+            .catch(function (error) {
+              console.warn('[PWA] Error al registrar Service Worker:', error);
+            });
+        });
+      }
+    </script>
+  </body>
+</html>

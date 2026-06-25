@@ -1,0 +1,250 @@
+/* ─────────────────────────────────────────
+   UPDATE PROFILE — Purple Theme
+   Importar en UpdateProfile.jsx:
+   import './UpdateProfile.css';
+───────────────────────────────────────── */
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+/* ══════════════════════════════════════
+   CONTENEDOR
+══════════════════════════════════════ */
+.update-profile-container {
+    font-family: 'Poppins', sans-serif;
+}
+
+.update-profile-container .card {
+    border: 1px solid #ede9fe !important;
+    border-radius: 16px !important;
+    box-shadow: 0 4px 24px rgba(99, 102, 241, 0.07) !important;
+    background: #ffffff !important;
+    overflow: hidden !important;
+}
+
+.update-profile-container .card-body {
+    padding: 32px 36px !important;
+}
+
+/* ══════════════════════════════════════
+   HEADER DE PERFIL
+══════════════════════════════════════ */
+.profile-header {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    padding: 24px 28px;
+    background: linear-gradient(135deg, #667eea15, #764ba215);
+    border-bottom: 1px solid #ede9fe;
+    margin: -32px -36px 32px;
+}
+
+.profile-avatar-wrap {
+    position: relative;
+    flex-shrink: 0;
+}
+
+.profile-avatar-wrap img,
+.profile-avatar-wrap .avatar-circle {
+    width: 80px !important;
+    height: 80px !important;
+    border-radius: 50% !important;
+    object-fit: cover !important;
+    border: 3px solid #ffffff !important;
+    box-shadow: 0 4px 16px rgba(99, 102, 241, 0.2) !important;
+}
+
+.profile-avatar-label {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 26px;
+    height: 26px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    border-radius: 50%;
+    border: 2px solid #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: opacity 0.18s;
+}
+
+.profile-avatar-label:hover {
+    opacity: 0.85;
+}
+
+.profile-avatar-label svg {
+    width: 12px;
+    height: 12px;
+    stroke: #ffffff;
+    fill: none;
+}
+
+.profile-header-info h2 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #1f2937;
+    margin: 0 0 4px;
+}
+
+.profile-header-info p {
+    font-size: 13px;
+    color: #a78bfa;
+    margin: 0;
+    font-weight: 500;
+}
+
+/* ══════════════════════════════════════
+   SECTION TITLE
+══════════════════════════════════════ */
+.profile-section-title {
+    font-size: 11px;
+    font-weight: 700;
+    color: #a78bfa;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #f0ebff;
+}
+
+/* ══════════════════════════════════════
+   LABELS
+══════════════════════════════════════ */
+.update-profile-container .form-label {
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    color: #4b5563 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.04em !important;
+    margin-bottom: 6px !important;
+    font-family: 'Poppins', sans-serif !important;
+    display: block !important;
+}
+
+/* ══════════════════════════════════════
+   INPUTS
+══════════════════════════════════════ */
+.update-profile-container .form-control {
+    background: #ffffff !important;
+    border: 1.5px solid #e9d5ff !important;
+    border-radius: 10px !important;
+    font-size: 13.5px !important;
+    font-family: 'Poppins', sans-serif !important;
+    color: #374151 !important;
+    padding: 10px 14px !important;
+    height: auto !important;
+    transition: border-color 0.18s, box-shadow 0.18s !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.update-profile-container .form-control:focus {
+    border-color: #6366f1 !important;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1) !important;
+    background: #ffffff !important;
+}
+
+.update-profile-container .form-control::placeholder {
+    color: #c4b5fd !important;
+    font-size: 13px !important;
+}
+
+/* ══════════════════════════════════════
+   ERRORES
+══════════════════════════════════════ */
+.update-profile-container .text-danger {
+    font-size: 11.5px !important;
+    color: #e24b4a !important;
+    font-weight: 500 !important;
+    font-family: 'Poppins', sans-serif !important;
+}
+
+/* ══════════════════════════════════════
+   BOTONES
+══════════════════════════════════════ */
+.update-profile-container .btn-primary {
+    background: linear-gradient(135deg, #667eea, #764ba2) !important;
+    border: none !important;
+    color: #ffffff !important;
+    border-radius: 10px !important;
+    font-size: 13.5px !important;
+    font-weight: 600 !important;
+    font-family: 'Poppins', sans-serif !important;
+    padding: 10px 28px !important;
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.28) !important;
+    transition: opacity 0.18s, transform 0.12s !important;
+    cursor: pointer !important;
+}
+
+.update-profile-container .btn-primary:hover:not(:disabled) {
+    opacity: 0.9 !important;
+}
+
+.update-profile-container .btn-primary:active:not(:disabled) {
+    transform: scale(0.98) !important;
+}
+
+.update-profile-container .btn-primary:disabled {
+    opacity: 0.45 !important;
+    cursor: not-allowed !important;
+}
+
+.update-profile-container .btn-secondary {
+    background: #f5f3ff !important;
+    border: 1.5px solid #ddd6fe !important;
+    color: #6366f1 !important;
+    border-radius: 10px !important;
+    font-size: 13.5px !important;
+    font-weight: 500 !important;
+    font-family: 'Poppins', sans-serif !important;
+    padding: 10px 28px !important;
+    transition: all 0.18s !important;
+    box-shadow: none !important;
+    text-decoration: none !important;
+    display: inline-flex !important;
+    align-items: center !important;
+}
+
+.update-profile-container .btn-secondary:hover {
+    background: #ede9fe !important;
+    border-color: #a78bfa !important;
+    color: #4f46e5 !important;
+}
+
+/* ══════════════════════════════════════
+   IMAGE PICKER — ocultar el default feo
+══════════════════════════════════════ */
+.update-profile-container .image-picker-wrap input[type="file"] {
+    display: none !important;
+}
+
+.update-profile-container .image-picker-wrap label {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    background: #f5f3ff !important;
+    border: 1.5px dashed #c4b5fd !important;
+    border-radius: 10px !important;
+    padding: 8px 16px !important;
+    font-size: 12.5px !important;
+    font-weight: 500 !important;
+    color: #6366f1 !important;
+    cursor: pointer !important;
+    transition: all 0.18s !important;
+    font-family: 'Poppins', sans-serif !important;
+}
+
+.update-profile-container .image-picker-wrap label:hover {
+    background: #ede9fe !important;
+    border-color: #a78bfa !important;
+}
+
+/* ══════════════════════════════════════
+   CAMPO REQUERIDO
+══════════════════════════════════════ */
+.update-profile-container .required::after {
+    content: ' *';
+    color: #e24b4a;
+    font-size: 13px;
+}

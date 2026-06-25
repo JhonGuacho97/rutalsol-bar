@@ -1,0 +1,4 @@
+name,code,category,brand,Barcode symbol,product cost,product price,product unit,sale unit,purchase unit,stock alert,order tax Percentage,tax type,Notes,Warehouse,supplier,quantity,status
+Product 111,85958586,T-shirts,Zara,CODE128,20,85,kilogram,kilogram,kilogram,10,5,EXCLUSIVE,New fashion product,warehouse,demo supplier,100,ordered
+Product 222,46598685,Jeans,Zara,CODE128,45,96,Piece,Piece,Piece,10,3,INCLUSIVE,New fashion product,warehouse,demo supplier,100,received
+Product 333,53258695,Mobile,iPhone,CODE39,7,63,meter,meter,meter,10,7,EXCLUSIVE,New fashion product,warehouse,demo supplier,100,pending

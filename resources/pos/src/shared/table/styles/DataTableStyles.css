@@ -1,0 +1,423 @@
+/* ─────────────────────────────────────────
+   REACT DATA TABLE — Purple Theme
+   Importar en ReactDataTable.jsx:
+   import './ReactDataTable.css';
+───────────────────────────────────────── */
+
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap");
+
+/* ══════════════════════════════════════
+   CONTENEDOR PRINCIPAL
+══════════════════════════════════════ */
+.data-table {
+    font-family: "Poppins", sans-serif !important;
+    background: #ffffff;
+    border-radius: 14px;
+    border: 1px solid #ede9fe;
+    overflow: hidden;
+    box-shadow: 0 4px 24px rgba(99, 102, 241, 0.07);
+}
+
+/* ══════════════════════════════════════
+   SUBHEADER — fila de búsqueda + botones
+══════════════════════════════════════ */
+.data-table .rdt_TableHeader,
+.data-table header {
+    background: #ffffff !important;
+    border-bottom: 1px solid #f0ebff !important;
+    padding: 12px 16px !important;
+    min-height: 64px !important;
+}
+
+/* ══════════════════════════════════════
+   SEARCH BOX (FilterComponent)
+══════════════════════════════════════ */
+.data-table .searchBox .form-control,
+.data-table .searchBox input[type="search"] {
+    background: #f5f3ff !important;
+    border: 1.5px solid #e9d5ff !important;
+    border-radius: 10px !important;
+    font-size: 13px !important;
+    font-family: "Poppins", sans-serif !important;
+    color: #374151 !important;
+    height: 38px !important;
+    padding-left: 36px !important;
+    transition:
+        border-color 0.18s,
+        box-shadow 0.18s,
+        background 0.18s !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+
+.data-table .searchBox .form-control:focus,
+.data-table .searchBox input[type="search"]:focus {
+    border-color: #6366f1 !important;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1) !important;
+    background: #ffffff !important;
+}
+
+.data-table .searchBox .form-control::placeholder,
+.data-table .searchBox input[type="search"]::placeholder {
+    color: #c4b5fd !important;
+    font-size: 13px !important;
+}
+
+/* Ícono de lupa */
+.data-table .searchBox .svg-inline--fa {
+    color: #a78bfa !important;
+    font-size: 13px !important;
+}
+
+/* ══════════════════════════════════════
+   FILTER DROPDOWN (FilterDropdown)
+══════════════════════════════════════ */
+
+/* Botón del filtro (ícono embudo) */
+.data-table .filter-dropdown .btn-icon,
+.data-table .filter-dropdown .dropdown-toggle {
+    background: linear-gradient(135deg, #667eea, #764ba2) !important;
+    border: none !important;
+    border-radius: 10px !important;
+    width: 38px !important;
+    height: 38px !important;
+    padding: 0 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.28) !important;
+    transition: opacity 0.18s !important;
+}
+
+.data-table .filter-dropdown .btn-icon:hover,
+.data-table .filter-dropdown .dropdown-toggle:hover {
+    opacity: 0.88 !important;
+}
+
+.data-table .filter-dropdown .btn-icon .svg-inline--fa,
+.data-table .filter-dropdown .dropdown-toggle .svg-inline--fa {
+    color: #ffffff !important;
+    font-size: 13px !important;
+}
+
+/* Ocultar la flecha del toggle */
+.data-table .filter-dropdown .hide-arrow::after,
+.data-table .filter-dropdown .hide-arrow::before {
+    display: none !important;
+}
+
+/* Panel del dropdown */
+.data-table .filter-dropdown .dropdown-menu {
+    background: #ffffff !important;
+    border: 1px solid #ede9fe !important;
+    border-radius: 14px !important;
+    box-shadow: 0 8px 32px rgba(99, 102, 241, 0.12) !important;
+    padding: 20px 24px !important;
+    min-width: 280px !important;
+    margin-top: 6px !important;
+}
+
+/* Headers dentro del dropdown (etiquetas Estado, Estado de pago…) */
+.data-table .filter-dropdown .dropdown-header {
+    font-size: 12.5px !important;
+    font-weight: 600 !important;
+    font-family: "Poppins", sans-serif !important;
+    color: #6366f1 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.05em !important;
+    padding: 0 !important;
+    margin-bottom: 16px !important;
+}
+
+/* Etiquetas de los selects dentro del panel */
+.data-table .filter-dropdown .dropdown-menu label,
+.data-table .filter-dropdown .dropdown-menu .form-label {
+    font-size: 12.5px !important;
+    font-weight: 600 !important;
+    font-family: "Poppins", sans-serif !important;
+    color: #374151 !important;
+    margin-bottom: 6px !important;
+    display: block !important;
+}
+
+/* React-Select dentro del dropdown */
+.data-table .filter-dropdown .dropdown-menu .react-select__control {
+    background: #f5f3ff !important;
+    border: 1.5px solid #e9d5ff !important;
+    border-radius: 10px !important;
+    min-height: 38px !important;
+    font-size: 13px !important;
+    font-family: "Poppins", sans-serif !important;
+    box-shadow: none !important;
+    transition: border-color 0.18s !important;
+}
+
+.data-table .filter-dropdown .dropdown-menu .react-select__control:hover {
+    border-color: #a78bfa !important;
+}
+
+.data-table .filter-dropdown .dropdown-menu .react-select__control--is-focused {
+    border-color: #6366f1 !important;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1) !important;
+    background: #ffffff !important;
+}
+
+.data-table .filter-dropdown .dropdown-menu .react-select__placeholder {
+    color: #c4b5fd !important;
+    font-size: 13px !important;
+}
+
+.data-table .filter-dropdown .dropdown-menu .react-select__single-value {
+    color: #374151 !important;
+    font-size: 13px !important;
+}
+
+.data-table .filter-dropdown .dropdown-menu .react-select__indicator-separator {
+    display: none !important;
+}
+
+.data-table
+    .filter-dropdown
+    .dropdown-menu
+    .react-select__dropdown-indicator
+    svg {
+    fill: #a78bfa !important;
+    width: 16px !important;
+    height: 16px !important;
+}
+
+.data-table .filter-dropdown .dropdown-menu .react-select__menu {
+    border-radius: 10px !important;
+    border: 1px solid #ede9fe !important;
+    box-shadow: 0 4px 16px rgba(99, 102, 241, 0.1) !important;
+    font-size: 13px !important;
+    font-family: "Poppins", sans-serif !important;
+}
+
+.data-table .filter-dropdown .dropdown-menu .react-select__option--is-focused {
+    background: #f5f3ff !important;
+    color: #6366f1 !important;
+}
+
+.data-table .filter-dropdown .dropdown-menu .react-select__option--is-selected {
+    background: linear-gradient(135deg, #667eea, #764ba2) !important;
+    color: #ffffff !important;
+}
+
+/* Botón Reiniciar */
+.data-table .filter-dropdown .dropdown-menu .btn-secondary {
+    background: #f5f3ff !important;
+    border: 1.5px solid #ddd6fe !important;
+    color: #6366f1 !important;
+    border-radius: 10px !important;
+    font-size: 13px !important;
+    font-weight: 500 !important;
+    font-family: "Poppins", sans-serif !important;
+    padding: 7px 18px !important;
+    margin-top: 4px !important;
+    transition: all 0.18s !important;
+    box-shadow: none !important;
+}
+
+.data-table .filter-dropdown .dropdown-menu .btn-secondary:hover {
+    background: linear-gradient(135deg, #667eea, #764ba2) !important;
+    border-color: transparent !important;
+    color: #ffffff !important;
+}
+
+/* ══════════════════════════════════════
+   BOTONES DE ACCIÓN (PDF, Excel, Import)
+══════════════════════════════════════ */
+.data-table .btn-light-primary {
+    background: #f5f3ff !important;
+    border: 1.5px solid #c4b5fd !important;
+    color: #6366f1 !important;
+    border-radius: 10px !important;
+    font-size: 13px !important;
+    font-weight: 500 !important;
+    font-family: "Poppins", sans-serif !important;
+    padding: 7px 16px !important;
+    height: 38px !important;
+    transition: all 0.18s !important;
+    box-shadow: none !important;
+}
+
+.data-table .btn-light-primary:hover {
+    background: linear-gradient(135deg, #667eea, #764ba2) !important;
+    border-color: transparent !important;
+    color: #ffffff !important;
+}
+
+/* Botón principal Crear/Agregar */
+.data-table
+    .btn-primary:not(.btn-light-primary):not(.btn-icon):not(.dropdown-toggle) {
+    background: linear-gradient(135deg, #667eea, #764ba2) !important;
+    border: none !important;
+    color: #ffffff !important;
+    border-radius: 10px !important;
+    font-size: 13px !important;
+    font-weight: 400 !important;
+    font-family: "Poppins", sans-serif !important;
+    padding: 8px 12px !important;
+    height: 38px !important;
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.28) !important;
+    transition: opacity 0.18s !important;
+}
+
+.data-table
+    .btn-primary:not(.btn-light-primary):not(.btn-icon):not(
+        .dropdown-toggle
+    ):hover {
+    opacity: 0.9 !important;
+    color: #ffffff !important;
+}
+
+/* ══════════════════════════════════════
+   ENCABEZADOS DE COLUMNAS
+══════════════════════════════════════ */
+.data-table .rdt_TableHeadRow {
+    background: #f5f3ff !important;
+    border-bottom: 2px solid #ddd6fe !important;
+    min-height: 46px !important;
+}
+
+.data-table .rdt_TableCol,
+.data-table .rdt_TableCol_Sortable {
+    font-size: 11.5px !important;
+    font-weight: 600 !important;
+    font-family: "Poppins", sans-serif !important;
+    color: #6366f1 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.05em !important;
+    padding: 0 12px !important;
+}
+
+.data-table .rdt_TableCol_Sortable:hover {
+    color: #4f46e5 !important;
+    opacity: 1 !important;
+}
+
+.data-table .rdt_TableCol_Sortable span svg,
+.data-table .rdt_TableCol_Sortable .__rdt_custom_sort_icon__ svg {
+    fill: #a78bfa !important;
+    color: #a78bfa !important;
+}
+
+/* ══════════════════════════════════════
+   FILAS
+══════════════════════════════════════ */
+.data-table .rdt_TableRow {
+    background: #ffffff !important;
+    border-bottom: 1px solid #f5f0ff !important;
+    min-height: 52px !important;
+    transition: background 0.12s !important;
+}
+
+.data-table .rdt_TableRow:hover {
+    background: #faf8ff !important;
+    outline: none !important;
+}
+
+.data-table .rdt_TableRow:last-of-type {
+    border-bottom: none !important;
+}
+
+.data-table .rdt_TableCell {
+    font-size: 13.5px !important;
+    font-family: "Poppins", sans-serif !important;
+    color: #374151 !important;
+    padding: 0 12px !important;
+}
+
+/* ══════════════════════════════════════
+   PAGINACIÓN
+══════════════════════════════════════ */
+.data-table .rdt_Pagination {
+    background: #ffffff !important;
+    border-top: 1px solid #f0ebff !important;
+    padding: 8px 16px !important;
+    font-family: "Poppins", sans-serif !important;
+    font-size: 13px !important;
+    color: #6b7280 !important;
+    min-height: 52px !important;
+}
+
+.data-table .rdt_Pagination > span {
+    font-family: "Poppins", sans-serif !important;
+    font-size: 13px !important;
+    color: #6b7280 !important;
+}
+
+.data-table .rdt_Pagination select {
+    background: #f5f3ff !important;
+    border: 1.5px solid #ddd6fe !important;
+    border-radius: 8px !important;
+    padding: 4px 6px !important;
+    color: #6366f1 !important;
+    font-weight: 600 !important;
+    font-family: "Poppins", sans-serif !important;
+    font-size: 13px !important;
+    outline: none !important;
+    cursor: pointer !important;
+    -webkit-appearance: auto !important;
+}
+
+.data-table .rdt_Pagination select:focus {
+    border-color: #6366f1 !important;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1) !important;
+}
+
+.data-table .rdt_Pagination button {
+    background: transparent !important;
+    border: 1.5px solid #e9d5ff !important;
+    border-radius: 8px !important;
+    width: 32px !important;
+    height: 32px !important;
+    margin: 0 2px !important;
+    padding: 0 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition:
+        background 0.15s,
+        border-color 0.15s !important;
+    cursor: pointer !important;
+}
+
+.data-table .rdt_Pagination button:hover:not(:disabled) {
+    background: #f5f3ff !important;
+    border-color: #a78bfa !important;
+}
+
+.data-table .rdt_Pagination button:disabled {
+    opacity: 0.3 !important;
+    cursor: not-allowed !important;
+}
+
+.data-table .rdt_Pagination button svg {
+    fill: #6366f1 !important;
+    width: 15px !important;
+    height: 15px !important;
+}
+
+/* ══════════════════════════════════════
+   SCROLLBAR
+══════════════════════════════════════ */
+.data-table ::-webkit-scrollbar {
+    height: 5px;
+    width: 5px;
+}
+
+.data-table ::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.data-table ::-webkit-scrollbar-thumb {
+    background: #e9d5ff;
+    border-radius: 4px;
+}
+
+.data-table ::-webkit-scrollbar-thumb:hover {
+    background: #a78bfa;
+}
