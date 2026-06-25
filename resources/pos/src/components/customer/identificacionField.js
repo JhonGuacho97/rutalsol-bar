@@ -5,6 +5,8 @@ import {
     labelPorTipo,
 } from "../../utils/identificacionValidator";
 
+const longitudRequeridaPorTipo = (tipo) => (tipo === "04" ? 13 : 10);
+
 const IdentificacionField = ({ tipo, value, onChange, error, isEdit, sriLoading, onSriLookup }) => (
     <div className="col-md-6 mb-3">
         <label className="form-label">{labelPorTipo(tipo)}</label>
@@ -19,11 +21,11 @@ const IdentificacionField = ({ tipo, value, onChange, error, isEdit, sriLoading,
                 disabled={tipo === "07"}
                 placeholder={placeholderPorTipo(tipo)}
             />
-            {!isEdit && tipo !== "07" && (
+            {!isEdit && (tipo === "05" || tipo === "04") && (
                 <button
                     type="button"
                     className="btn btn-primary"
-                    disabled={sriLoading || (value || "").length < 10}
+                    disabled={sriLoading || (value || "").length !== longitudRequeridaPorTipo(tipo)}
                     onClick={onSriLookup}
                 >
                     {sriLoading ? "..." : "SRI"}

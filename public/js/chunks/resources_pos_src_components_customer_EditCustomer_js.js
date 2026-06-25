@@ -241,6 +241,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+var longitudRequeridaPorTipo = function longitudRequeridaPorTipo(tipo) {
+  return tipo === "04" ? 13 : 10;
+};
 var IdentificacionField = function IdentificacionField(_ref) {
   var tipo = _ref.tipo,
     value = _ref.value,
@@ -265,10 +268,10 @@ var IdentificacionField = function IdentificacionField(_ref) {
         onChange: onChange,
         disabled: tipo === "07",
         placeholder: (0,_utils_identificacionValidator__WEBPACK_IMPORTED_MODULE_1__.placeholderPorTipo)(tipo)
-      }), !isEdit && tipo !== "07" && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
+      }), !isEdit && (tipo === "05" || tipo === "04") && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
         type: "button",
         className: "btn btn-primary",
-        disabled: sriLoading || (value || "").length < 10,
+        disabled: sriLoading || (value || "").length !== longitudRequeridaPorTipo(tipo),
         onClick: onSriLookup,
         children: sriLoading ? "..." : "SRI"
       })]
@@ -511,16 +514,19 @@ var useCustomerForm = function useCustomerForm(_ref) {
               break;
             }
             dispatch((0,_store_action_toastAction__WEBPACK_IMPORTED_MODULE_9__.addToast)({
-              text: "No encontrado en el SRI",
+              text: json.message || "No encontrado en el SRI",
               type: "error"
             }));
             return _context2.a(2);
           case 5:
             setCustomerValue(function (prev) {
               return _objectSpread(_objectSpread({}, prev), {}, {
-                name: json.name || json.razon_social || prev.name,
-                address: json.direccion || json.direccion_matriz || prev.address,
-                country: "Ecuador"
+                name: json.name || prev.name,
+                email: json.email || prev.email,
+                phone: json.phone || prev.phone,
+                address: json.address || prev.address,
+                city: json.city || prev.city,
+                country: json.country || prev.country
               });
             });
             dispatch((0,_store_action_toastAction__WEBPACK_IMPORTED_MODULE_9__.addToast)({

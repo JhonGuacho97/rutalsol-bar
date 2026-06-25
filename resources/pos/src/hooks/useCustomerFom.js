@@ -108,15 +108,18 @@ export const useCustomerForm = ({ singleCustomer, addCustomerData, editCustomer,
             const json = await res.json();
 
             if (!res.ok) {
-                dispatch(addToast({ text: "No encontrado en el SRI", type: "error" }));
+                dispatch(addToast({ text: json.message || "No encontrado en el SRI", type: "error" }));
                 return;
             }
 
             setCustomerValue((prev) => ({
                 ...prev,
-                name: json.name || json.razon_social || prev.name,
-                address: json.direccion || json.direccion_matriz || prev.address,
-                country: "Ecuador",
+                name: json.name || prev.name,
+                email: json.email || prev.email,
+                phone: json.phone || prev.phone,
+                address: json.address || prev.address,
+                city: json.city || prev.city,
+                country: json.country || prev.country,
             }));
 
             dispatch(addToast({ text: "Datos cargados desde el SRI" }));

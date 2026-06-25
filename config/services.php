@@ -25,6 +25,10 @@ return [
         'token' => env('POSTMARK_TOKEN'),
     ],
 
+    'apiconsult' => [
+        'token' => env('APICONSULT_TOKEN'),
+    ],
+
     'ses' => [
         'key' => env('AWS_ACCESS_KEY_ID'),
         'secret' => env('AWS_SECRET_ACCESS_KEY'),
