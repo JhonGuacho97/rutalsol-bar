@@ -889,6 +889,7 @@ class ComposerStaticInit7fffbc345bfe6f2e1a041843c5c008dd
         'App\\Http\\Controllers\\API\\SettingAPIController' => __DIR__ . '/../..' . '/app/Http/Controllers/API/SettingAPIController.php',
         'App\\Http\\Controllers\\API\\SmsSettingAPIController' => __DIR__ . '/../..' . '/app/Http/Controllers/API/SmsSettingAPIController.php',
         'App\\Http\\Controllers\\API\\SmsTemplateAPIController' => __DIR__ . '/../..' . '/app/Http/Controllers/API/SmsTemplateAPIController.php',
+        'App\\Http\\Controllers\\API\\SriController' => __DIR__ . '/../..' . '/app/Http/Controllers/API/SriController.php',
         'App\\Http\\Controllers\\API\\SupplierAPIController' => __DIR__ . '/../..' . '/app/Http/Controllers/API/SupplierAPIController.php',
         'App\\Http\\Controllers\\API\\TransferAPIController' => __DIR__ . '/../..' . '/app/Http/Controllers/API/TransferAPIController.php',
         'App\\Http\\Controllers\\API\\UnitAPIController' => __DIR__ . '/../..' . '/app/Http/Controllers/API/UnitAPIController.php',

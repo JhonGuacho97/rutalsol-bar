@@ -89,6 +89,7 @@ return array(
     'App\\Http\\Controllers\\API\\SettingAPIController' => $baseDir . '/app/Http/Controllers/API/SettingAPIController.php',
     'App\\Http\\Controllers\\API\\SmsSettingAPIController' => $baseDir . '/app/Http/Controllers/API/SmsSettingAPIController.php',
     'App\\Http\\Controllers\\API\\SmsTemplateAPIController' => $baseDir . '/app/Http/Controllers/API/SmsTemplateAPIController.php',
+    'App\\Http\\Controllers\\API\\SriController' => $baseDir . '/app/Http/Controllers/API/SriController.php',
     'App\\Http\\Controllers\\API\\SupplierAPIController' => $baseDir . '/app/Http/Controllers/API/SupplierAPIController.php',
     'App\\Http\\Controllers\\API\\TransferAPIController' => $baseDir . '/app/Http/Controllers/API/TransferAPIController.php',
     'App\\Http\\Controllers\\API\\UnitAPIController' => $baseDir . '/app/Http/Controllers/API/UnitAPIController.php',
