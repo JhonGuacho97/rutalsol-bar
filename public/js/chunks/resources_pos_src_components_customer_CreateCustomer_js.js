@@ -465,7 +465,7 @@ var useCustomerForm = function useCustomerForm(_ref) {
   }();
   var handleSriLookup = /*#__PURE__*/function () {
     var _ref3 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee2() {
-      var identification, res, json, _t;
+      var identification, res, json, _t, _t2;
       return _regenerator().w(function (_context2) {
         while (1) switch (_context2.p = _context2.n) {
           case 0:
@@ -479,23 +479,37 @@ var useCustomerForm = function useCustomerForm(_ref) {
             setSriLoading(true);
             _context2.p = 2;
             _context2.n = 3;
-            return fetch("/api/sri/lookup?identification=".concat(identification));
+            return fetch("https://rutasol-bar.alice-dev.com/api/sri/lookup?identification=".concat(identification));
           case 3:
             res = _context2.v;
-            _context2.n = 4;
+            _context2.p = 4;
+            _context2.n = 5;
             return res.json();
-          case 4:
+          case 5:
             json = _context2.v;
-            if (res.ok) {
-              _context2.n = 5;
-              break;
-            }
+            _context2.n = 7;
+            break;
+          case 6:
+            _context2.p = 6;
+            _t = _context2.v;
+            console.error("Respuesta no es JSON válido. Status:", res.status);
             dispatch((0,_store_action_toastAction__WEBPACK_IMPORTED_MODULE_9__.addToast)({
-              text: json.message || "No encontrado en el SRI",
+              text: "Error del servidor (status ".concat(res.status, ")"),
               type: "error"
             }));
             return _context2.a(2);
-          case 5:
+          case 7:
+            if (res.ok) {
+              _context2.n = 8;
+              break;
+            }
+            console.error("Error SRI lookup:", json);
+            dispatch((0,_store_action_toastAction__WEBPACK_IMPORTED_MODULE_9__.addToast)({
+              text: json.debug_message || json.message || "No encontrado en el SRI",
+              type: "error"
+            }));
+            return _context2.a(2);
+          case 8:
             setCustomerValue(function (prev) {
               return _objectSpread(_objectSpread({}, prev), {}, {
                 name: json.name || prev.name,
@@ -509,23 +523,24 @@ var useCustomerForm = function useCustomerForm(_ref) {
             dispatch((0,_store_action_toastAction__WEBPACK_IMPORTED_MODULE_9__.addToast)({
               text: "Datos cargados desde el SRI"
             }));
-            _context2.n = 7;
+            _context2.n = 10;
             break;
-          case 6:
-            _context2.p = 6;
-            _t = _context2.v;
+          case 9:
+            _context2.p = 9;
+            _t2 = _context2.v;
+            console.error("Error de red en SRI lookup:", _t2);
             dispatch((0,_store_action_toastAction__WEBPACK_IMPORTED_MODULE_9__.addToast)({
               text: "Error de red",
               type: "error"
             }));
-          case 7:
-            _context2.p = 7;
+          case 10:
+            _context2.p = 10;
             setSriLoading(false);
-            return _context2.f(7);
-          case 8:
+            return _context2.f(10);
+          case 11:
             return _context2.a(2);
         }
-      }, _callee2, null, [[2, 6, 7, 8]]);
+      }, _callee2, null, [[4, 6], [2, 9, 10, 11]]);
     }));
     return function handleSriLookup() {
       return _ref3.apply(this, arguments);

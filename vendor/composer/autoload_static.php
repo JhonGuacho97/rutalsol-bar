@@ -249,8 +249,8 @@ class ComposerStaticInit7fffbc345bfe6f2e1a041843c5c008dd
         ),
         'phpDocumentor\\Reflection\\' => 
         array (
-            0 => __DIR__ . '/..' . '/phpdocumentor/reflection-common/src',
-            1 => __DIR__ . '/..' . '/phpdocumentor/type-resolver/src',
+            0 => __DIR__ . '/..' . '/phpdocumentor/type-resolver/src',
+            1 => __DIR__ . '/..' . '/phpdocumentor/reflection-common/src',
         ),
         'ZipStream\\' => 
         array (
@@ -474,8 +474,8 @@ class ComposerStaticInit7fffbc345bfe6f2e1a041843c5c008dd
         ),
         'Psr\\Http\\Message\\' => 
         array (
-            0 => __DIR__ . '/..' . '/psr/http-message/src',
-            1 => __DIR__ . '/..' . '/psr/http-factory/src',
+            0 => __DIR__ . '/..' . '/psr/http-factory/src',
+            1 => __DIR__ . '/..' . '/psr/http-message/src',
         ),
         'Psr\\Http\\Client\\' => 
         array (
@@ -860,6 +860,7 @@ class ComposerStaticInit7fffbc345bfe6f2e1a041843c5c008dd
         'App\\Http\\Controllers\\API\\ExpenseCategoryAPIController' => __DIR__ . '/../..' . '/app/Http/Controllers/API/ExpenseCategoryAPIController.php',
         'App\\Http\\Controllers\\API\\HoldAPIController' => __DIR__ . '/../..' . '/app/Http/Controllers/API/HoldAPIController.php',
         'App\\Http\\Controllers\\API\\LanguageAPIController' => __DIR__ . '/../..' . '/app/Http/Controllers/API/LanguageAPIController.php',
+        'App\\Http\\Controllers\\API\\LoginLogController' => __DIR__ . '/../..' . '/app/Http/Controllers/API/LoginLogController.php',
         'App\\Http\\Controllers\\API\\M1\\AuthController' => __DIR__ . '/../..' . '/app/Http/Controllers/API/M1/AuthController.php',
         'App\\Http\\Controllers\\API\\M1\\BrandAPIController' => __DIR__ . '/../..' . '/app/Http/Controllers/API/M1/BrandAPIController.php',
         'App\\Http\\Controllers\\API\\M1\\CustomerAPIController' => __DIR__ . '/../..' . '/app/Http/Controllers/API/M1/CustomerAPIController.php',
@@ -1034,6 +1035,8 @@ class ComposerStaticInit7fffbc345bfe6f2e1a041843c5c008dd
         'App\\Imports\\CustomerImport' => __DIR__ . '/../..' . '/app/Imports/CustomerImport.php',
         'App\\Imports\\ProductImport' => __DIR__ . '/../..' . '/app/Imports/ProductImport.php',
         'App\\Imports\\SupplierImport' => __DIR__ . '/../..' . '/app/Imports/SupplierImport.php',
+        'App\\Listeners\\LogFailedLogin' => __DIR__ . '/../..' . '/app/Listeners/LogFailedLogin.php',
+        'App\\Listeners\\LogSuccessfulLogin' => __DIR__ . '/../..' . '/app/Listeners/LogSuccessfulLogin.php',
         'App\\Mail\\MailSender' => __DIR__ . '/../..' . '/app/Mail/MailSender.php',
         'App\\MediaLibrary\\CustomPathGenerator' => __DIR__ . '/../..' . '/app/MediaLibrary/CustomPathGenerator.php',
         'App\\Models\\Adjustment' => __DIR__ . '/../..' . '/app/Models/Adjustment.php',
@@ -1046,11 +1049,13 @@ class ComposerStaticInit7fffbc345bfe6f2e1a041843c5c008dd
         'App\\Models\\CouponCode' => __DIR__ . '/../..' . '/app/Models/CouponCode.php',
         'App\\Models\\Currency' => __DIR__ . '/../..' . '/app/Models/Currency.php',
         'App\\Models\\Customer' => __DIR__ . '/../..' . '/app/Models/Customer.php',
+        'App\\Models\\ElectronicInvoice' => __DIR__ . '/../..' . '/app/Models/ElectronicInvoice.php',
         'App\\Models\\Expense' => __DIR__ . '/../..' . '/app/Models/Expense.php',
         'App\\Models\\ExpenseCategory' => __DIR__ . '/../..' . '/app/Models/ExpenseCategory.php',
         'App\\Models\\Hold' => __DIR__ . '/../..' . '/app/Models/Hold.php',
         'App\\Models\\HoldItem' => __DIR__ . '/../..' . '/app/Models/HoldItem.php',
         'App\\Models\\Language' => __DIR__ . '/../..' . '/app/Models/Language.php',
+        'App\\Models\\LoginLog' => __DIR__ . '/../..' . '/app/Models/LoginLog.php',
         'App\\Models\\MailTemplate' => __DIR__ . '/../..' . '/app/Models/MailTemplate.php',
         'App\\Models\\MainProduct' => __DIR__ . '/../..' . '/app/Models/MainProduct.php',
         'App\\Models\\ManageStock' => __DIR__ . '/../..' . '/app/Models/ManageStock.php',
@@ -1084,6 +1089,7 @@ class ComposerStaticInit7fffbc345bfe6f2e1a041843c5c008dd
         'App\\Models\\VariationType' => __DIR__ . '/../..' . '/app/Models/VariationType.php',
         'App\\Models\\Warehouse' => __DIR__ . '/../..' . '/app/Models/Warehouse.php',
         'App\\Notifications\\ResetPasswordNotification' => __DIR__ . '/../..' . '/app/Notifications/ResetPasswordNotification.php',
+        'App\\Observers\\CustomerObserver' => __DIR__ . '/../..' . '/app/Observers/CustomerObserver.php',
         'App\\Providers\\AppServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AppServiceProvider.php',
         'App\\Providers\\AuthServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AuthServiceProvider.php',
         'App\\Providers\\BroadcastServiceProvider' => __DIR__ . '/../..' . '/app/Providers/BroadcastServiceProvider.php',
@@ -1126,6 +1132,8 @@ class ComposerStaticInit7fffbc345bfe6f2e1a041843c5c008dd
         'App\\Repositories\\UserRepository' => __DIR__ . '/../..' . '/app/Repositories/UserRepository.php',
         'App\\Repositories\\VariationRepository' => __DIR__ . '/../..' . '/app/Repositories/VariationRepository.php',
         'App\\Repositories\\WarehouseRepository' => __DIR__ . '/../..' . '/app/Repositories/WarehouseRepository.php',
+        'App\\Services\\SriService' => __DIR__ . '/../..' . '/app/Services/SriService.php',
+        'App\\Services\\SriXmlService' => __DIR__ . '/../..' . '/app/Services/SriXmlService.php',
         'App\\Sorts\\UserCustomSort' => __DIR__ . '/../..' . '/app/Sorts/UserCustomSort.php',
         'App\\Traits\\HasJsonResourcefulData' => __DIR__ . '/../..' . '/app/Traits/HasJsonResourcefulData.php',
         'App\\Utils\\ResponseUtil' => __DIR__ . '/../..' . '/app/Utils/ResponseUtil.php',

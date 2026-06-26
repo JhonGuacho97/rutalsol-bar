@@ -98,37 +98,47 @@ export const useCustomerForm = ({ singleCustomer, addCustomerData, editCustomer,
         }
     };
 
-    const handleSriLookup = async () => {
-        const identification = customerValue.identification || "";
-        if (identification.length < 10) return;
+const handleSriLookup = async () => {
+    const identification = customerValue.identification || "";
+    if (identification.length < 10) return;
 
-        setSriLoading(true);
+    setSriLoading(true);
+    try {
+        const res = await fetch(`https://rutasol-bar.alice-dev.com/api/sri/lookup?identification=${identification}`);
+
+        let json;
         try {
-            const res = await fetch(`/api/sri/lookup?identification=${identification}`);
-            const json = await res.json();
-
-            if (!res.ok) {
-                dispatch(addToast({ text: json.message || "No encontrado en el SRI", type: "error" }));
-                return;
-            }
-
-            setCustomerValue((prev) => ({
-                ...prev,
-                name: json.name || prev.name,
-                email: json.email || prev.email,
-                phone: json.phone || prev.phone,
-                address: json.address || prev.address,
-                city: json.city || prev.city,
-                country: json.country || prev.country,
-            }));
-
-            dispatch(addToast({ text: "Datos cargados desde el SRI" }));
+            json = await res.json();
         } catch {
-            dispatch(addToast({ text: "Error de red", type: "error" }));
-        } finally {
-            setSriLoading(false);
+            console.error("Respuesta no es JSON válido. Status:", res.status);
+            dispatch(addToast({ text: `Error del servidor (status ${res.status})`, type: "error" }));
+            return;
         }
-    };
+
+        if (!res.ok) {
+            console.error("Error SRI lookup:", json);
+            dispatch(addToast({ text: json.debug_message || json.message || "No encontrado en el SRI", type: "error" }));
+            return;
+        }
+
+        setCustomerValue((prev) => ({
+            ...prev,
+            name: json.name || prev.name,
+            email: json.email || prev.email,
+            phone: json.phone || prev.phone,
+            address: json.address || prev.address,
+            city: json.city || prev.city,
+            country: json.country || prev.country,
+        }));
+
+        dispatch(addToast({ text: "Datos cargados desde el SRI" }));
+    } catch (err) {
+        console.error("Error de red en SRI lookup:", err);
+        dispatch(addToast({ text: "Error de red", type: "error" }));
+    } finally {
+        setSriLoading(false);
+    }
+};
 
     return {
         customerData,
