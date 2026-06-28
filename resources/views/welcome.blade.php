@@ -29,7 +29,7 @@
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', function () {
                 navigator.serviceWorker.register('/sw.js')
-                    .then(reg => console.log('SW registrado', reg))
+                    .then(reg => console.log('SW registrado'))
                     .catch(err => console.log('SW error', err));
             });
         }

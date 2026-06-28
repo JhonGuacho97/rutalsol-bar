@@ -55,23 +55,24 @@ self.addEventListener("activate", (event) => {
 self.addEventListener("fetch", (event) => {
     const url = new URL(event.request.url);
 
-    // Ignorar peticiones que no son GET
     if (event.request.method !== "GET") return;
-
-    // Ignorar extensiones de browser y chrome-extension
     if (!url.protocol.startsWith("http")) return;
 
-    // Peticiones a la API → siempre red, nunca caché
-    if (url.pathname.startsWith("/api/")) {
+    // Lista explícita de extensiones/paths que SÍ se pueden cachear
+    const esAssetEstatico =
+        STATIC_ASSETS.includes(url.pathname) ||
+        /\.(js|css|png|jpg|jpeg|svg|ico|woff2?)$/.test(url.pathname);
+
+    if (!esAssetEstatico) {
+        // Cualquier petición de datos dinámicos: siempre red, nunca caché
         event.respondWith(fetch(event.request));
         return;
     }
 
-    // Todo lo demás: red primero, caché como fallback
+    // Solo para assets estáticos: red primero, caché como fallback
     event.respondWith(
         fetch(event.request)
             .then((response) => {
-                // Si la respuesta es válida, actualizamos la caché
                 if (response && response.status === 200 && response.type === "basic") {
                     const responseClone = response.clone();
                     caches.open(CACHE_NAME).then((cache) => {
@@ -81,10 +82,8 @@ self.addEventListener("fetch", (event) => {
                 return response;
             })
             .catch(() => {
-                // Sin conexión: intentar caché
                 return caches.match(event.request).then((cached) => {
                     if (cached) return cached;
-                    // Si no hay caché y es navegación, mostrar página offline
                     if (event.request.mode === "navigate") {
                         return caches.match("/offline.html");
                     }

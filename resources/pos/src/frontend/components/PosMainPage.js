@@ -78,6 +78,7 @@ const PosMainPage = (props) => {
     const brandIdRef = useRef();
     const categoryIdRef = useRef();
     const registerDetailsRef = useRef();
+    const fetchRequestIdRef = useRef(0);
     // const [play] = useSound('https://s3.amazonaws.com/freecodecamp/drums/Heater-4_1.mp3');
     const [openCalculator, setOpenCalculator] = useState(false);
     const [quantity, setQuantity] = useState(1);
@@ -233,28 +234,35 @@ const PosMainPage = (props) => {
     //     }
     // }, [selectedOption, brandId, categoryId]);
 
-    // 3. Reemplaza el useEffect del filtro por estos DOS separados
-    useEffect(() => {
-        if (selectedOption) {
-            fetchBrandClickable(
-                brandIdRef.current,
-                categoryIdRef.current,
-                selectedOption.value
-            );
-        }
-    }, [selectedOption]); // ← solo para cuando cambia el warehouse
+    // // 3. Reemplaza el useEffect del filtro por estos DOS separados
+    // useEffect(() => {
+    //     if (selectedOption) {
+    //         fetchBrandClickable(
+    //             brandIdRef.current,
+    //             categoryIdRef.current,
+    //             selectedOption.value
+    //         );
+    //     }
+    // }, [selectedOption]); // ← solo para cuando cambia el warehouse
 
+    // ÚNICO useEffect para fetchBrandClickable (reemplaza los dos anteriores)
     useEffect(() => {
-        if (!selectedOption) return; // Si no hay warehouse seleccionado, no hace nada
+        if (!selectedOption) return;
+
+        const requestId = ++fetchRequestIdRef.current;
+
         const timer = setTimeout(() => {
-            fetchBrandClickable(
-                brandIdRef.current,
-                categoryIdRef.current,
-                selectedOption.value
-            );
+            // Solo ejecuta si esta sigue siendo la última petición solicitada
+            if (requestId === fetchRequestIdRef.current) {
+                fetchBrandClickable(
+                    brandIdRef.current,
+                    categoryIdRef.current,
+                    selectedOption.value
+                );
+            }
         }, 300);
 
-        return () => clearTimeout(timer); // cancela si vuelve a cambiar antes de 300ms
+        return () => clearTimeout(timer);
     }, [selectedOption, brandId, categoryId]);
 
     const onChangeInput = (e) => {
@@ -520,7 +528,7 @@ const PosMainPage = (props) => {
             />
         );
     };
-    
+
     const [lgShow, setLgShow] = useState(false);
     const [holdShow, setHoldShow] = useState(false);
 
@@ -693,7 +701,7 @@ const PosMainPage = (props) => {
                                 updateProducts={updateProducts}
                             // handleOnSelect={handleOnSelect} handleOnSearch={handleOnSearch}
                             // searchString={searchString}
-                            /> 
+                            />
                             <HeaderAllButton
                                 holdListData={holdListData}
                                 goToHoldScreen={onClickHoldModel}
@@ -728,6 +736,8 @@ const PosMainPage = (props) => {
                                 settings={settings}
                                 productMsg={productMsg}
                                 selectedOption={selectedOption}
+                                brandId={brandId}
+                                categoryId={categoryId}
                             />
                         </div>
                     </div>

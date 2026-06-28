@@ -1394,6 +1394,7 @@ var PosMainPage = function PosMainPage(props) {
   var brandIdRef = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)();
   var categoryIdRef = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)();
   var registerDetailsRef = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)();
+  var fetchRequestIdRef = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(0);
   // const [play] = useSound('https://s3.amazonaws.com/freecodecamp/drums/Heater-4_1.mp3');
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
     _useState2 = _slicedToArray(_useState, 2),
@@ -1597,21 +1598,30 @@ var PosMainPage = function PosMainPage(props) {
   //     }
   // }, [selectedOption, brandId, categoryId]);
 
-  // 3. Reemplaza el useEffect del filtro por estos DOS separados
-  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
-    if (selectedOption) {
-      fetchBrandClickable(brandIdRef.current, categoryIdRef.current, selectedOption.value);
-    }
-  }, [selectedOption]); // ← solo para cuando cambia el warehouse
+  // // 3. Reemplaza el useEffect del filtro por estos DOS separados
+  // useEffect(() => {
+  //     if (selectedOption) {
+  //         fetchBrandClickable(
+  //             brandIdRef.current,
+  //             categoryIdRef.current,
+  //             selectedOption.value
+  //         );
+  //     }
+  // }, [selectedOption]); // ← solo para cuando cambia el warehouse
 
+  // ÚNICO useEffect para fetchBrandClickable (reemplaza los dos anteriores)
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
-    if (!selectedOption) return; // Si no hay warehouse seleccionado, no hace nada
+    if (!selectedOption) return;
+    var requestId = ++fetchRequestIdRef.current;
     var timer = setTimeout(function () {
-      fetchBrandClickable(brandIdRef.current, categoryIdRef.current, selectedOption.value);
+      // Solo ejecuta si esta sigue siendo la última petición solicitada
+      if (requestId === fetchRequestIdRef.current) {
+        fetchBrandClickable(brandIdRef.current, categoryIdRef.current, selectedOption.value);
+      }
     }, 300);
     return function () {
       return clearTimeout(timer);
-    }; // cancela si vuelve a cambiar antes de 300ms
+    };
   }, [selectedOption, brandId, categoryId]);
   var onChangeInput = function onChangeInput(e) {
     e.preventDefault();
@@ -2029,7 +2039,9 @@ var PosMainPage = function PosMainPage(props) {
               cartProductIds: cartProductIds,
               settings: settings,
               productMsg: productMsg,
-              selectedOption: selectedOption
+              selectedOption: selectedOption,
+              brandId: brandId,
+              categoryId: categoryId
             })]
           })]
         })
@@ -4462,7 +4474,7 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
 
 
 var PaymentSlipModal = function PaymentSlipModal(props) {
-  var _frontSetting$value, _paymentDetails$attri, _paymentDetails$attri2;
+  var _paymentDetails$attri, _updateProducts$produ, _paymentDetails$attri2, _paymentDetails$attri3;
   var settings = props.settings,
     modalShowPaymentSlip = props.modalShowPaymentSlip,
     setModalShowPaymentSlip = props.setModalShowPaymentSlip,
@@ -4482,11 +4494,11 @@ var PaymentSlipModal = function PaymentSlipModal(props) {
     content: function content() {
       return printRef.current;
     },
-    pageStyle: "\n            @page { \n                size: 80mm auto; \n                margin: 4mm 2mm;\n            }\n            @media print {\n                * { box-sizing: border-box !important; }\n                body { \n                    margin: 0 !important; \n                    padding: 0 !important; \n                    background: white !important;\n                    width: 80mm !important;\n                }\n                table { \n                    width: 100% !important; \n                    border-collapse: collapse !important;\n                }\n            }\n        "
+    pageStyle: "\n            @page { \n                size: 80mm auto;  \n                margin: 4mm 2mm;\n            }\n            @media print {\n                * {\n                    box-sizing: border-box !important;\n        font-family: Arial, sans-serif !important;\n        -webkit-font-smoothing: none !important;\n        }\n                body { \n                    margin: 0 !important; \n                    padding: 0 !important; \n                    background: white !important;\n                    width: 80mm !important;\n                }\n                table { \n                    width: 100% !important; \n                    border-collapse: collapse !important;\n                }\n            }\n        "
   });
   var currency = updateProducts.settings && updateProducts.settings.attributes && updateProducts.settings.attributes.currency_symbol;
 
-  // ✅ 3. Estilos del ticket
+  // ✅ 3. Estilos del ticket (alineados a TicketSlipModal)
   var ticketStyle = {
     width: '72mm',
     maxWidth: '72mm',
@@ -4495,18 +4507,18 @@ var PaymentSlipModal = function PaymentSlipModal(props) {
     fontSize: '12px',
     color: '#000',
     backgroundColor: '#fff',
-    padding: '4px'
+    padding: '6px',
+    lineHeight: '1.4'
   };
   var rowStyle = {
     display: 'flex',
     justifyContent: 'space-between',
-    borderBottom: '1px dashed #ccc',
     padding: '4px 0',
     fontSize: '12px'
   };
   var dividerStyle = {
     borderBottom: '1px dashed #000',
-    margin: '4px 0'
+    margin: '6px 0'
   };
   var handleClose = function handleClose() {
     setModalShowPaymentSlip(false);
@@ -4533,115 +4545,120 @@ var PaymentSlipModal = function PaymentSlipModal(props) {
       children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
         ref: printRef,
         style: ticketStyle,
-        children: [settings.attributes && settings.attributes.show_logo_in_receipt === "1" && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
           style: {
-            textAlign: 'center',
-            margin: '8px 0'
+            textAlign: 'center'
           },
-          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("img", {
+          children: [settings.attributes && settings.attributes.show_logo_in_receipt === "1" && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("img", {
             src: frontSetting.value.logo,
             alt: "",
             style: {
-              width: '80px',
-              height: 'auto'
+              width: '55px',
+              marginBottom: '4px'
             }
-          })
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
+            style: {
+              fontWeight: 'bold',
+              fontSize: '13px'
+            },
+            children: paymentDetails === null || paymentDetails === void 0 || (_paymentDetails$attri = paymentDetails.attributes) === null || _paymentDetails$attri === void 0 ? void 0 : _paymentDetails$attri.warehouse_name
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
+            style: {
+              fontSize: '10px'
+            },
+            children: frontSetting.value && frontSetting.value.address
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
+            style: {
+              fontSize: '10px'
+            },
+            children: frontSetting.value && frontSetting.value.email
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
+            style: {
+              fontSize: '10px'
+            },
+            children: frontSetting.value && frontSetting.value.phone
+          })]
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
+          style: dividerStyle
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
           style: {
             textAlign: 'center',
-            fontWeight: 'bold',
-            fontSize: '14px',
-            margin: '4px 0 8px'
-          },
-          children: frontSetting === null || frontSetting === void 0 || (_frontSetting$value = frontSetting.value) === null || _frontSetting$value === void 0 ? void 0 : _frontSetting$value.company_name
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
-          style: dividerStyle
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("table", {
-          style: {
-            width: '100%',
-            borderCollapse: 'collapse',
             fontSize: '11px'
           },
-          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("tbody", {
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("tr", {
-              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("td", {
-                style: {
-                  padding: '2px 0'
-                },
-                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("strong", {
-                  children: [(0,_shared_sharedMethod__WEBPACK_IMPORTED_MODULE_4__.getFormattedMessage)("react-data-table.date.column.label"), ":"]
-                }), ' ', (0,_shared_sharedMethod__WEBPACK_IMPORTED_MODULE_4__.getFormattedDate)(new Date(), allConfigData && allConfigData)]
-              })
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("tr", {
-              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("td", {
-                style: {
-                  padding: '2px 0'
-                },
-                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("strong", {
-                  children: [(0,_shared_sharedMethod__WEBPACK_IMPORTED_MODULE_4__.getFormattedMessage)("supplier.table.address.column.title"), ":"]
-                }), ' ', frontSetting.value && frontSetting.value.address]
-              })
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("tr", {
-              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("td", {
-                style: {
-                  padding: '2px 0'
-                },
-                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("strong", {
-                  children: [(0,_shared_sharedMethod__WEBPACK_IMPORTED_MODULE_4__.getFormattedMessage)("globally.input.email.label"), ":"]
-                }), ' ', frontSetting.value && frontSetting.value.email]
-              })
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("tr", {
-              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("td", {
-                style: {
-                  padding: '2px 0'
-                },
-                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("strong", {
-                  children: [(0,_shared_sharedMethod__WEBPACK_IMPORTED_MODULE_4__.getFormattedMessage)("pos-sale.detail.Phone.info"), ":"]
-                }), ' ', frontSetting.value && frontSetting.value.phone]
-              })
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("tr", {
-              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("td", {
-                style: {
-                  padding: '2px 0'
-                },
-                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("strong", {
-                  children: [(0,_shared_sharedMethod__WEBPACK_IMPORTED_MODULE_4__.getFormattedMessage)("dashboard.recentSales.customer.label"), ":"]
-                }), ' ', updateProducts.customer_name && updateProducts.customer_name[0] ? updateProducts.customer_name[0].label : updateProducts.customer_name && updateProducts.customer_name.label]
-              })
-            })]
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
+            style: {
+              fontWeight: 'bold'
+            },
+            children: (0,_shared_sharedMethod__WEBPACK_IMPORTED_MODULE_4__.getFormattedMessage)("pos-sale.detail.invoice.info")
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
+            children: ["No: ", (_updateProducts$produ = updateProducts.products) === null || _updateProducts$produ === void 0 ? void 0 : _updateProducts$produ.reference_code]
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
+            children: [(0,_shared_sharedMethod__WEBPACK_IMPORTED_MODULE_4__.getFormattedMessage)("react-data-table.date.column.label"), ":", ' ', (0,_shared_sharedMethod__WEBPACK_IMPORTED_MODULE_4__.getFormattedDate)(new Date(), allConfigData && allConfigData)]
+          })]
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
+          style: dividerStyle
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
+          style: {
+            fontSize: '11px'
+          },
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("strong", {
+              children: [(0,_shared_sharedMethod__WEBPACK_IMPORTED_MODULE_4__.getFormattedMessage)("dashboard.recentSales.customer.label"), ":"]
+            }), ' ', updateProducts.customer_name && updateProducts.customer_name[0] ? updateProducts.customer_name[0].label : updateProducts.customer_name && updateProducts.customer_name.label]
           })
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
           style: dividerStyle
-        }), updateProducts.products && updateProducts.products.map(function (productName, index) {
-          return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
-            style: {
-              padding: '3px 0'
-            },
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("table", {
+          style: {
+            width: '100%',
+            fontSize: '11px',
+            borderCollapse: 'collapse'
+          },
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("thead", {
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("tr", {
               style: {
-                fontSize: '11px'
+                borderBottom: '1px solid #000',
+                borderTop: '1px solid #000'
               },
-              children: [productName.name, ' ', /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("span", {
-                style: {
-                  color: '#555'
-                },
-                children: ["(", productName.code, ")"]
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("th", {
+                align: "left",
+                children: "Prod."
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("th", {
+                align: "center",
+                children: "Cant"
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("th", {
+                align: "right",
+                children: "P.Unit"
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("th", {
+                align: "right",
+                children: "Total"
               })]
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
-              style: {
-                display: 'flex',
-                justifyContent: 'space-between',
-                fontSize: '11px'
-              },
-              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("span", {
-                children: [productName.quantity.toFixed(2), ' ', productName.product_unit === "3" && "Kg" || productName.product_unit === "1" && "Pc" || productName.product_unit === "2" && "M", ' ', "X ", (0,_shared_SharedMethod__WEBPACK_IMPORTED_MODULE_3__.calculateProductCost)(productName).toFixed(2)]
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("span", {
-                children: (0,_shared_sharedMethod__WEBPACK_IMPORTED_MODULE_4__.currencySymbolHandling)(allConfigData, currency, productName.quantity * (0,_shared_SharedMethod__WEBPACK_IMPORTED_MODULE_3__.calculateProductCost)(productName))
-              })]
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
-              style: dividerStyle
-            })]
-          }, index + 1);
+            })
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("tbody", {
+            children: updateProducts.products && updateProducts.products.map(function (productName, index) {
+              var price = (0,_shared_SharedMethod__WEBPACK_IMPORTED_MODULE_3__.calculateProductCost)(productName);
+              var total = productName.quantity * price;
+              return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("tr", {
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("td", {
+                  style: {
+                    paddingTop: '2px'
+                  },
+                  children: [productName.name, ' ']
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("td", {
+                  align: "center",
+                  children: productName.quantity.toFixed(2)
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("td", {
+                  align: "right",
+                  children: price.toFixed(2)
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("td", {
+                  align: "right",
+                  children: (0,_shared_sharedMethod__WEBPACK_IMPORTED_MODULE_4__.currencySymbolHandling)(allConfigData, currency, total)
+                })]
+              }, index + 1);
+            })
+          })]
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
+          style: dividerStyle
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
           style: rowStyle,
           children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("span", {
@@ -4673,74 +4690,70 @@ var PaymentSlipModal = function PaymentSlipModal(props) {
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
           style: _objectSpread(_objectSpread({}, rowStyle), {}, {
             fontWeight: 'bold',
-            fontSize: '13px'
+            fontSize: '13px',
+            borderTop: '1px dashed #000',
+            marginTop: '4px',
+            paddingTop: '4px'
           }),
           children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("span", {
             children: [(0,_shared_sharedMethod__WEBPACK_IMPORTED_MODULE_4__.getFormattedMessage)("purchase.grant-total.label"), ":"]
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("span", {
             children: (0,_shared_sharedMethod__WEBPACK_IMPORTED_MODULE_4__.currencySymbolHandling)(allConfigData, currency, updateProducts.grandTotal)
           })]
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
+          style: dividerStyle
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
           style: {
-            marginTop: '6px'
+            fontSize: '11px'
           },
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
             style: {
-              display: 'flex',
-              justifyContent: 'space-between',
-              borderTop: '1px dashed #000',
-              borderBottom: '1px dashed #000',
-              padding: '3px 0',
               fontWeight: 'bold',
-              fontSize: '11px'
+              marginBottom: '2px'
             },
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("span", {
-              children: (0,_shared_sharedMethod__WEBPACK_IMPORTED_MODULE_4__.getFormattedMessage)("pos-sale.detail.Paid-bt.title")
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("span", {
-              children: (0,_shared_sharedMethod__WEBPACK_IMPORTED_MODULE_4__.getFormattedMessage)("expense.input.amount.label")
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("span", {
-              children: (0,_shared_sharedMethod__WEBPACK_IMPORTED_MODULE_4__.getFormattedMessage)("pos.change-return.label")
-            })]
+            children: (0,_shared_sharedMethod__WEBPACK_IMPORTED_MODULE_4__.getFormattedMessage)("pos-sale.detail.Paid-bt.title")
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
-            style: {
-              display: 'flex',
-              justifyContent: 'space-between',
-              padding: '3px 0',
-              fontSize: '11px'
-            },
+            style: rowStyle,
             children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("span", {
               children: paymentType
             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("span", {
               children: (0,_shared_sharedMethod__WEBPACK_IMPORTED_MODULE_4__.currencySymbolHandling)(allConfigData, currency, updateProducts.grandTotal)
+            })]
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
+            style: rowStyle,
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("span", {
+              children: (0,_shared_sharedMethod__WEBPACK_IMPORTED_MODULE_4__.getFormattedMessage)("pos.change-return.label")
             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("span", {
               children: (0,_shared_sharedMethod__WEBPACK_IMPORTED_MODULE_4__.currencySymbolHandling)(allConfigData, currency, updateProducts.changeReturn)
             })]
           })]
-        }), updateProducts && updateProducts.note && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
-          style: _objectSpread(_objectSpread({}, rowStyle), {}, {
-            flexDirection: 'column',
-            marginTop: '6px'
-          }),
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("span", {
+        }), updateProducts && updateProducts.note && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.Fragment, {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
+            style: dividerStyle
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
             style: {
-              fontWeight: 'bold'
-            },
-            children: "Notes:"
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("span", {
-            style: {
-              marginTop: '2px',
               fontSize: '11px'
             },
-            children: updateProducts.note
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("span", {
+              style: {
+                fontWeight: 'bold'
+              },
+              children: "Notes:"
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
+              style: {
+                marginTop: '2px'
+              },
+              children: updateProducts.note
+            })]
           })]
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
           style: {
             textAlign: 'center',
-            marginTop: '10px',
-            borderTop: '1px dashed #000',
-            paddingTop: '8px'
+            marginTop: '6px'
           },
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("p", {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
+            style: dividerStyle
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("p", {
             style: {
               margin: '0 0 6px',
               fontWeight: 'bold',
@@ -4748,7 +4761,7 @@ var PaymentSlipModal = function PaymentSlipModal(props) {
             },
             children: [(0,_shared_sharedMethod__WEBPACK_IMPORTED_MODULE_4__.getFormattedMessage)("pos-thank.you-slip.invoice"), "."]
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["default"], {
-            src: paymentDetails === null || paymentDetails === void 0 || (_paymentDetails$attri = paymentDetails.attributes) === null || _paymentDetails$attri === void 0 ? void 0 : _paymentDetails$attri.barcode_url,
+            src: paymentDetails === null || paymentDetails === void 0 || (_paymentDetails$attri2 = paymentDetails.attributes) === null || _paymentDetails$attri2 === void 0 ? void 0 : _paymentDetails$attri2.barcode_url,
             height: 25,
             width: 100
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("span", {
@@ -4757,7 +4770,7 @@ var PaymentSlipModal = function PaymentSlipModal(props) {
               fontSize: '10px',
               marginTop: '2px'
             },
-            children: paymentDetails === null || paymentDetails === void 0 || (_paymentDetails$attri2 = paymentDetails.attributes) === null || _paymentDetails$attri2 === void 0 ? void 0 : _paymentDetails$attri2.reference_code
+            children: paymentDetails === null || paymentDetails === void 0 || (_paymentDetails$attri3 = paymentDetails.attributes) === null || _paymentDetails$attri3 === void 0 ? void 0 : _paymentDetails$attri3.reference_code
           })]
         })]
       })
@@ -5331,6 +5344,8 @@ var Product = function Product(props) {
     productMsg = props.productMsg,
     newCost = props.newCost,
     selectedOption = props.selectedOption,
+    brandId = props.brandId,
+    categoryId = props.categoryId,
     allConfigData = props.allConfigData;
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
     _useState2 = _slicedToArray(_useState, 2),
@@ -5368,6 +5383,11 @@ var Product = function Product(props) {
       setIsLoading(false); // ← cuando llegan productos, quita el skeleton
     }
   }, [posAllProducts]);
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
+    if (selectedOption) {
+      setIsLoading(true);
+    }
+  }, [selectedOption, brandId, categoryId]);
   var addToCart = function addToCart(product) {
     play();
     posFetchProduct(product.id);
@@ -6662,7 +6682,7 @@ var useCustomerForm = function useCustomerForm(_ref) {
             setSriLoading(true);
             _context2.p = 2;
             _context2.n = 3;
-            return fetch("https://rutasol-bar.alice-dev.com/api/sri/lookup?identification=".concat(identification));
+            return fetch("/api/sri/lookup?identification=".concat(identification));
           case 3:
             res = _context2.v;
             _context2.p = 4;

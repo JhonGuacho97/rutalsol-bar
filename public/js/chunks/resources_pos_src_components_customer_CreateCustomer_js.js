@@ -479,7 +479,7 @@ var useCustomerForm = function useCustomerForm(_ref) {
             setSriLoading(true);
             _context2.p = 2;
             _context2.n = 3;
-            return fetch("https://rutasol-bar.alice-dev.com/api/sri/lookup?identification=".concat(identification));
+            return fetch("/api/sri/lookup?identification=".concat(identification));
           case 3:
             res = _context2.v;
             _context2.p = 4;

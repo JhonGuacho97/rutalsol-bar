@@ -26,6 +26,8 @@ const Product = (props) => {
         productMsg,
         newCost,
         selectedOption,
+        brandId,        // NUEVO
+        categoryId,      // NUEVO
         allConfigData,
     } = props;
     const [updateProducts, setUpdateProducts] = useState([]);
@@ -57,6 +59,12 @@ const Product = (props) => {
             setIsLoading(false);  // ← cuando llegan productos, quita el skeleton
         }
     }, [posAllProducts]);
+
+    useEffect(() => {
+        if (selectedOption) {
+            setIsLoading(true);
+        }
+    }, [selectedOption, brandId, categoryId]);
 
     const addToCart = (product) => {
         play();

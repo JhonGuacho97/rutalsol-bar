@@ -104,7 +104,7 @@ const handleSriLookup = async () => {
 
     setSriLoading(true);
     try {
-        const res = await fetch(`https://rutasol-bar.alice-dev.com/api/sri/lookup?identification=${identification}`);
+        const res = await fetch(`/api/sri/lookup?identification=${identification}`);
 
         let json;
         try {

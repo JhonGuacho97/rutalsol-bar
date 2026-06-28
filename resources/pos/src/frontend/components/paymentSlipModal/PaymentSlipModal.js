@@ -31,11 +31,15 @@ const PaymentSlipModal = (props) => {
         content: () => printRef.current,
         pageStyle: `
             @page { 
-                size: 80mm auto; 
+                size: 80mm auto;  
                 margin: 4mm 2mm;
             }
             @media print {
-                * { box-sizing: border-box !important; }
+                * {
+                    box-sizing: border-box !important;
+        font-family: Arial, sans-serif !important;
+        -webkit-font-smoothing: none !important;
+        }
                 body { 
                     margin: 0 !important; 
                     padding: 0 !important; 
@@ -55,7 +59,7 @@ const PaymentSlipModal = (props) => {
         updateProducts.settings.attributes &&
         updateProducts.settings.attributes.currency_symbol;
 
-    // ✅ 3. Estilos del ticket
+    // ✅ 3. Estilos del ticket (alineados a TicketSlipModal)
     const ticketStyle = {
         width: '72mm',
         maxWidth: '72mm',
@@ -64,28 +68,26 @@ const PaymentSlipModal = (props) => {
         fontSize: '12px',
         color: '#000',
         backgroundColor: '#fff',
-        padding: '4px',
+        padding: '6px',
+        lineHeight: '1.4',
     };
 
     const rowStyle = {
         display: 'flex',
         justifyContent: 'space-between',
-        borderBottom: '1px dashed #ccc',
         padding: '4px 0',
         fontSize: '12px',
     };
 
     const dividerStyle = {
         borderBottom: '1px dashed #000',
-        margin: '4px 0',
+        margin: '6px 0',
     };
 
     const handleClose = () => {
         setModalShowPaymentSlip(false);
         setPaymentValue({ payment_type: paymentTypeDefaultValue[0] });
     };
-
-    
 
     return (
         <Modal
@@ -106,91 +108,106 @@ const PaymentSlipModal = (props) => {
                 {/* ✅ 4. ref en el div con ancho fijo, NO en Modal.Body */}
                 <div ref={printRef} style={ticketStyle}>
 
-                    {/* Logo */}
-                    {settings.attributes &&
-                        settings.attributes.show_logo_in_receipt === "1" && (
-                        <div style={{ textAlign: 'center', margin: '8px 0' }}>
-                            <img
-                                src={frontSetting.value.logo}
-                                alt=""
-                                style={{ width: '80px', height: 'auto' }}
-                            />
-                        </div>
-                    )}
+                    {/* 🔷 HEADER */}
+                    <div style={{ textAlign: 'center' }}>
+                        {settings.attributes &&
+                            settings.attributes.show_logo_in_receipt === "1" && (
+                                <img
+                                    src={frontSetting.value.logo}
+                                    alt=""
+                                    style={{ width: '55px', marginBottom: '4px' }}
+                                />
+                            )}
 
-                    {/* Nombre empresa */}
-                    <div style={{ textAlign: 'center', fontWeight: 'bold', fontSize: '14px', margin: '4px 0 8px' }}>
-                        {frontSetting?.value?.company_name}
+                        <div style={{ fontWeight: 'bold', fontSize: '13px' }}>
+                            {paymentDetails?.attributes?.warehouse_name}
+                        </div>
+
+                        <div style={{ fontSize: '10px' }}>
+                            {frontSetting.value && frontSetting.value.address}
+                        </div>
+
+                        <div style={{ fontSize: '10px' }}>
+                            {frontSetting.value && frontSetting.value.email}
+                        </div>
+
+                        <div style={{ fontSize: '10px' }}>
+                            {frontSetting.value && frontSetting.value.phone}
+                        </div>
                     </div>
 
-                    {/* Info empresa */}
-                    <div style={dividerStyle} />
-                    <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '11px' }}>
-                        <tbody>
-                            <tr>
-                                <td style={{ padding: '2px 0' }}>
-                                    <strong>{getFormattedMessage("react-data-table.date.column.label")}:</strong>{' '}
-                                    {getFormattedDate(new Date(), allConfigData && allConfigData)}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style={{ padding: '2px 0' }}>
-                                    <strong>{getFormattedMessage("supplier.table.address.column.title")}:</strong>{' '}
-                                    {frontSetting.value && frontSetting.value.address}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style={{ padding: '2px 0' }}>
-                                    <strong>{getFormattedMessage("globally.input.email.label")}:</strong>{' '}
-                                    {frontSetting.value && frontSetting.value.email}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style={{ padding: '2px 0' }}>
-                                    <strong>{getFormattedMessage("pos-sale.detail.Phone.info")}:</strong>{' '}
-                                    {frontSetting.value && frontSetting.value.phone}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style={{ padding: '2px 0' }}>
-                                    <strong>{getFormattedMessage("dashboard.recentSales.customer.label")}:</strong>{' '}
-                                    {updateProducts.customer_name && updateProducts.customer_name[0]
-                                        ? updateProducts.customer_name[0].label
-                                        : updateProducts.customer_name && updateProducts.customer_name.label}
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
                     <div style={dividerStyle} />
 
-                    {/* Productos */}
-                    {updateProducts.products &&
-                        updateProducts.products.map((productName, index) => (
-                            <div key={index + 1} style={{ padding: '3px 0' }}>
-                                <div style={{ fontSize: '11px' }}>
-                                    {productName.name}{' '}
-                                    <span style={{ color: '#555' }}>({productName.code})</span>
-                                </div>
-                                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '11px' }}>
-                                    <span>
-                                        {productName.quantity.toFixed(2)}{' '}
-                                        {(productName.product_unit === "3" && "Kg") ||
-                                         (productName.product_unit === "1" && "Pc") ||
-                                         (productName.product_unit === "2" && "M")}{' '}
-                                        X {calculateProductCost(productName).toFixed(2)}
-                                    </span>
-                                    <span>
-                                        {currencySymbolHandling(
-                                            allConfigData,
-                                            currency,
-                                            productName.quantity * calculateProductCost(productName)
-                                        )}
-                                    </span>
-                                </div>
-                                <div style={dividerStyle} />
-                            </div>
-                        ))
-                    }
+                    {/* 🔷 INFO DOCUMENTO */}
+                    <div style={{ textAlign: 'center', fontSize: '11px' }}>
+                        <div style={{ fontWeight: 'bold' }}>
+                            {getFormattedMessage("pos-sale.detail.invoice.info")}
+                        </div>
+                        <div>No: {updateProducts.products?.reference_code}</div>
+                        <div>
+                            {getFormattedMessage("react-data-table.date.column.label")}:{' '}
+                            {getFormattedDate(new Date(), allConfigData && allConfigData)}
+                        </div>
+                    </div>
+
+                    <div style={dividerStyle} />
+
+                    {/* 🔷 CLIENTE */}
+                    <div style={{ fontSize: '11px' }}>
+                        <div>
+                            <strong>{getFormattedMessage("dashboard.recentSales.customer.label")}:</strong>{' '}
+                            {updateProducts.customer_name && updateProducts.customer_name[0]
+                                ? updateProducts.customer_name[0].label
+                                : updateProducts.customer_name && updateProducts.customer_name.label}
+                        </div>
+                    </div>
+
+                    <div style={dividerStyle} />
+
+                    {/* Productos — tabla estilo supermercado */}
+                    <table style={{
+                        width: '100%',
+                        fontSize: '11px',
+                        borderCollapse: 'collapse'
+                    }}>
+                        <thead>
+                            <tr style={{
+                                borderBottom: '1px solid #000',
+                                borderTop: '1px solid #000'
+                            }}>
+                                <th align="left">Prod.</th>
+                                <th align="center">Cant</th>
+                                <th align="right">P.Unit</th>
+                                <th align="right">Total</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {updateProducts.products &&
+                                updateProducts.products.map((productName, index) => {
+                                    const price = calculateProductCost(productName);
+                                    const total = productName.quantity * price;
+
+                                    return (
+                                        <tr key={index + 1}>
+                                            <td style={{ paddingTop: '2px' }}>
+                                                {productName.name}{' '}
+                                            </td>
+                                            <td align="center">
+                                                {productName.quantity.toFixed(2)}
+                                            </td>
+                                            <td align="right">{price.toFixed(2)}</td>
+                                            <td align="right">
+                                                {currencySymbolHandling(allConfigData, currency, total)}
+                                            </td>
+                                        </tr>
+                                    );
+                                })
+                            }
+                        </tbody>
+                    </table>
+
+                    <div style={dividerStyle} />
 
                     {/* Subtotal */}
                     <div style={rowStyle}>
@@ -232,33 +249,35 @@ const PaymentSlipModal = (props) => {
                     )}
 
                     {/* Gran total */}
-                    <div style={{ ...rowStyle, fontWeight: 'bold', fontSize: '13px' }}>
+                    <div style={{
+                        ...rowStyle,
+                        fontWeight: 'bold',
+                        fontSize: '13px',
+                        borderTop: '1px dashed #000',
+                        marginTop: '4px',
+                        paddingTop: '4px'
+                    }}>
                         <span>{getFormattedMessage("purchase.grant-total.label")}:</span>
                         <span>
                             {currencySymbolHandling(allConfigData, currency, updateProducts.grandTotal)}
                         </span>
                     </div>
 
-                    {/* Método de pago — reemplaza la Table striped de Bootstrap */}
-                    <div style={{ marginTop: '6px' }}>
-                        <div style={{
-                            display: 'flex',
-                            justifyContent: 'space-between',
-                            borderTop: '1px dashed #000',
-                            borderBottom: '1px dashed #000',
-                            padding: '3px 0',
-                            fontWeight: 'bold',
-                            fontSize: '11px',
-                        }}>
-                            <span>{getFormattedMessage("pos-sale.detail.Paid-bt.title")}</span>
-                            <span>{getFormattedMessage("expense.input.amount.label")}</span>
-                            <span>{getFormattedMessage("pos.change-return.label")}</span>
+                    <div style={dividerStyle} />
+
+                    {/* Método de pago */}
+                    <div style={{ fontSize: '11px' }}>
+                        <div style={{ fontWeight: 'bold', marginBottom: '2px' }}>
+                            {getFormattedMessage("pos-sale.detail.Paid-bt.title")}
                         </div>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', padding: '3px 0', fontSize: '11px' }}>
+                        <div style={rowStyle}>
                             <span>{paymentType}</span>
                             <span>
                                 {currencySymbolHandling(allConfigData, currency, updateProducts.grandTotal)}
                             </span>
+                        </div>
+                        <div style={rowStyle}>
+                            <span>{getFormattedMessage("pos.change-return.label")}</span>
                             <span>
                                 {currencySymbolHandling(allConfigData, currency, updateProducts.changeReturn)}
                             </span>
@@ -267,21 +286,20 @@ const PaymentSlipModal = (props) => {
 
                     {/* Notas (condicional) */}
                     {updateProducts && updateProducts.note && (
-                        <div style={{ ...rowStyle, flexDirection: 'column', marginTop: '6px' }}>
-                            <span style={{ fontWeight: 'bold' }}>Notes:</span>
-                            <span style={{ marginTop: '2px', fontSize: '11px' }}>
-                                {updateProducts.note}
-                            </span>
-                        </div>
+                        <>
+                            <div style={dividerStyle} />
+                            <div style={{ fontSize: '11px' }}>
+                                <span style={{ fontWeight: 'bold' }}>Notes:</span>
+                                <div style={{ marginTop: '2px' }}>
+                                    {updateProducts.note}
+                                </div>
+                            </div>
+                        </>
                     )}
 
                     {/* Mensaje y código de barras */}
-                    <div style={{
-                        textAlign: 'center',
-                        marginTop: '10px',
-                        borderTop: '1px dashed #000',
-                        paddingTop: '8px',
-                    }}>
+                    <div style={{ textAlign: 'center', marginTop: '6px' }}>
+                        <div style={dividerStyle} />
                         <p style={{ margin: '0 0 6px', fontWeight: 'bold', fontSize: '11px' }}>
                             {getFormattedMessage("pos-thank.you-slip.invoice")}.
                         </p>
